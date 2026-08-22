@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Production builds & packaged executables
+dist/
+dist-electron/
+release/
+
+# IDE & OS temp files
+.DS_Store
+Thumbs.db
+*.log
+scratch/
+.system_generated/
+.vscode/
+.idea/
