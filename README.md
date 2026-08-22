@@ -131,9 +131,13 @@ When creating a new repository folder in terminal or VSCode:
 git init
 
 # 2. Add Remote URL with your personal SSH alias
-git remote add origin git@github-personal:your-github-username/my-portfolio.git
+git remote add origin git@github-personal:YOUR_GITHUB_USERNAME/my-portfolio.git
 
-# 3. Commit and Push!
+# 3. Set local repository identity (ensures commits are authored by this account)
+git config user.name "YOUR_ACCOUNT_USERNAME"
+git config user.email "YOUR_ACCOUNT_EMAIL@example.com"
+
+# 4. Commit and Push!
 git add .
 git commit -m "Initial commit"
 git push -u origin main
@@ -145,15 +149,32 @@ git push -u origin main
 git init
 
 # 2. Add Remote URL with your work SSH alias
-git remote add origin git@github-work:your-work-username/company-app.git
+git remote add origin git@github-work:YOUR_WORK_USERNAME/company-app.git
 
-# 3. Commit and Push!
+# 3. Set local repository identity (ensures commits are authored by this account)
+git config user.name "YOUR_WORK_USERNAME"
+git config user.email "YOUR_WORK_EMAIL@example.com"
+
+# 4. Commit and Push!
 git add .
 git commit -m "Initial commit"
 git push -u origin main
 ```
 
-**That's it!** GitIdentity automatically sets your commit author name, email, and SSH transport key with **0% chance of cross-account leaks!**
+> **Note**: Replace `"YOUR_ACCOUNT_USERNAME"` and `"YOUR_ACCOUNT_EMAIL@example.com"` with your actual GitHub username and the email associated with that account.
+
+---
+
+### 💡 Why Local Git Identity Configuration (`user.name` & `user.email`) is Required
+
+Git separates **Network Authentication** from **Commit Authorship**:
+
+| Configuration | Command / Setting | Purpose |
+| :--- | :--- | :--- |
+| **SSH Remote Host** | `git remote add origin git@github-alias:...` | Authenticates your SSH key to grant **push/write permission** on GitHub. |
+| **Local Commit Identity** | `git config user.name "..."`<br>`git config user.email "..."` | Stamps your **author identity & email** onto the actual commit objects. GitHub reads this to show your avatar and profile link. |
+
+If you do not configure local `user.email` inside a repository folder, Git will silently fall back to your machine's **global configuration** (`~/.gitconfig`), which results in GitHub attributing your commits to your global account instead of the repository's account!
 
 ---
 
@@ -191,6 +212,13 @@ GitIdentity/
 #### Q: What happens when I restart my laptop?
 GitIdentity is registered in Windows Startup (`HKCU\Software\Microsoft\Windows\CurrentVersion\Run`). It automatically starts silently when Windows boots up!
 
+#### Q: Why did GitHub show my global account on my push even though I used the SSH alias?
+Because SSH aliases (`git@github-alias:...`) only grant **push access**. The commit author avatar shown on GitHub is controlled strictly by the local `user.email` set in your repository. To fix this:
+```bash
+git config user.name "YOUR_ACCOUNT_USERNAME"
+git config user.email "YOUR_ACCOUNT_EMAIL@example.com"
+```
+
 #### Q: How does GitIdentity ensure my commits don't use the wrong email?
 GitIdentity uses a 3-layer protection system:
 1. Native Git `includeIf` routing in `~/.gitconfig`.
@@ -202,3 +230,4 @@ GitIdentity uses a 3-layer protection system:
 ## 📜 License
 
 Distributed under the **MIT License**. Free for commercial and personal use.
+
