@@ -1,4 +1,11 @@
-# 🚀 GitIdentity v1.0.1 — Apple Pro Desktop Release
+<p align="center">
+  <img src="https://raw.githubusercontent.com/geekykalpesh/GitIdentify/main/resources/icon.png" width="72" height="72" alt="GitIdentity Logo" />
+</p>
+
+<h1 align="center">GitIdentity v1.0.1</h1>
+<p align="center"><strong>Multi-Account SSH & Repository Identity Manager for Windows, macOS, and Linux</strong></p>
+
+---
 
 We are excited to announce **GitIdentity v1.0.1**! This major release brings a complete **Apple Pro macOS Tahoe UI overhaul**, an instant **Splash Loading Screen**, **Code Signing security configuration**, and **Multi-Platform Installer packages** for Windows, macOS, and Linux.
 
