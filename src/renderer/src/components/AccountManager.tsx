@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Account } from '../../types';
 import { api } from '../utils/api';
-import { Users, Plus, CheckCircle2, AlertCircle, Trash2, Key, RefreshCw, Github, ShieldAlert, X, Copy, Check, Terminal, Clock, Sparkles, HelpCircle } from 'lucide-react';
+import { Users, Plus, CheckCircle2, AlertCircle, Trash2, Key, RefreshCw, Github, ShieldAlert, X, Copy, Check, Terminal, Clock, Sparkles, HelpCircle, ExternalLink } from 'lucide-react';
 
 interface AccountManagerProps {
   accounts: Account[];
@@ -153,6 +153,8 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
     setTestingId(null);
   };
 
+  const [showGuide, setShowGuide] = useState(accounts.length === 0);
+
   return (
     <div className="space-y-6">
       {/* Apple Pro Hero Banner */}
@@ -172,16 +174,26 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              setModalError(null);
-              setShowAddModal(true);
-            }}
-            className="apple-button-primary flex items-center space-x-2 px-5 py-2.5 rounded-2xl text-xs font-extrabold cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all shrink-0"
-          >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>Add GitHub Account</span>
-          </button>
+          <div className="flex items-center space-x-3 shrink-0">
+            <button
+              onClick={() => setShowGuide(!showGuide)}
+              className="apple-button-secondary px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center space-x-1.5 cursor-pointer"
+            >
+              <HelpCircle className="w-4 h-4 text-teal-300" />
+              <span>{showGuide ? 'Hide Guide' : 'Setup Guide'}</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setModalError(null);
+                setShowAddModal(true);
+              }}
+              className="apple-button-primary flex items-center space-x-2 px-5 py-2.5 rounded-2xl text-xs font-extrabold cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all"
+            >
+              <Plus className="w-4 h-4 stroke-[2.5]" />
+              <span>Add GitHub Account</span>
+            </button>
+          </div>
         </div>
 
         <div className="pt-2.5 border-t border-white/10 flex items-center space-x-2 text-xs text-slate-300 font-medium relative z-10">
@@ -189,6 +201,75 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
           <span><strong>Pro Tip:</strong> Use the generated SSH host alias (e.g., <code className="text-teal-300 font-mono font-bold bg-white/5 px-2 py-0.5 rounded border border-white/10">git@github-kirti:user/repo.git</code>) when setting git remotes.</span>
         </div>
       </div>
+
+      {/* 4-Step Quick Start Setup Guide Component */}
+      {showGuide && (
+        <div className="apple-glass p-5 rounded-3xl border border-white/10 space-y-4 shadow-xl relative overflow-hidden">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2.5">
+              <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center border border-teal-500/30">
+                <HelpCircle className="w-4.5 h-4.5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-extrabold text-slate-100 tracking-tight">How It Works — Step-by-Step Setup Guide</h3>
+                <p className="text-[11px] text-slate-400 font-medium">Follow these 4 simple steps to connect and route your GitHub accounts</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowGuide(false)}
+              className="text-slate-400 hover:text-slate-200 text-xs font-bold cursor-pointer p-1"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 pt-3 border-t border-white/10">
+            {/* Step 1 */}
+            <div className="p-3.5 bg-slate-950/80 rounded-2xl border border-white/10 space-y-2 relative">
+              <div className="w-6 h-6 rounded-full bg-teal-500/20 text-teal-300 text-xs font-extrabold flex items-center justify-center border border-teal-500/40">
+                1
+              </div>
+              <h4 className="text-xs font-extrabold text-slate-200">1. Add Profile</h4>
+              <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
+                Click <strong>"Add GitHub Account"</strong>. Enter your Name, GitHub Username, Email, and Host Alias (e.g. <code className="text-teal-300 font-mono">github-personal</code>).
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="p-3.5 bg-slate-950/80 rounded-2xl border border-white/10 space-y-2 relative">
+              <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-extrabold flex items-center justify-center border border-cyan-500/40">
+                2
+              </div>
+              <h4 className="text-xs font-extrabold text-slate-200">2. Add SSH Key</h4>
+              <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
+                GitIdentity generates an ED25519 keypair. Copy your Public SSH key and paste it at <button type="button" onClick={() => api.openExternal('https://github.com/settings/ssh/new')} className="text-teal-300 underline font-bold cursor-pointer">github.com/settings/ssh</button>.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="p-3.5 bg-slate-950/80 rounded-2xl border border-white/10 space-y-2 relative">
+              <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-extrabold flex items-center justify-center border border-emerald-500/40">
+                3
+              </div>
+              <h4 className="text-xs font-extrabold text-slate-200">3. Test Connection</h4>
+              <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
+                Click <strong>"Test Connection"</strong> on your profile card to verify OpenSSH authentication with GitHub servers.
+              </p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="p-3.5 bg-slate-950/80 rounded-2xl border border-white/10 space-y-2 relative">
+              <div className="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-extrabold flex items-center justify-center border border-indigo-500/40">
+                4
+              </div>
+              <h4 className="text-xs font-extrabold text-slate-200">4. Run Commands</h4>
+              <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
+                Copy pre-formatted terminal commands from your card (<code className="text-teal-300 font-mono text-[10px]">git remote add origin ...</code>) into your project folder!
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Account Grid */}
       {accounts.length === 0 ? (
@@ -268,6 +349,45 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
                         <span className="font-mono text-slate-300 font-semibold">{formattedCreated}</span>
                       </div>
                     )}
+                  </div>
+
+                  {/* 🔑 High-Visibility Unmistakable SSH Key Box */}
+                  <div className="mt-4 p-3.5 bg-slate-950/90 rounded-2xl border border-teal-500/40 space-y-2.5 shadow-xl relative overflow-hidden">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center space-x-2">
+                        <Key className="w-4 h-4 text-teal-300 shrink-0" />
+                        <span className="text-xs font-extrabold text-slate-100 tracking-tight">Public SSH Key (Paste to GitHub)</span>
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => handleCopy(acc.publicKey || '', `${acc.id}_pubkey`)}
+                          className="px-3.5 py-1.5 bg-gradient-to-r from-teal-400 to-cyan-400 hover:from-teal-300 hover:to-cyan-300 text-slate-950 rounded-xl text-xs font-black flex items-center space-x-1.5 cursor-pointer shadow-lg shadow-teal-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          {copiedCmd[`${acc.id}_pubkey`] ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : <Copy className="w-3.5 h-3.5 stroke-[3]" />}
+                          <span>{copiedCmd[`${acc.id}_pubkey`] ? 'Key Copied!' : 'Copy Public Key'}</span>
+                        </button>
+
+                        <button
+                          onClick={() => api.openExternal('https://github.com/settings/ssh/new')}
+                          className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-teal-300 border border-teal-500/30 rounded-xl text-xs font-bold flex items-center space-x-1 cursor-pointer transition shadow-sm"
+                          title="Open GitHub SSH Key Settings"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>Open GitHub ↗</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Display Key Preview Box */}
+                    <div className="font-mono text-[11px] text-teal-300/90 bg-slate-900/95 p-2.5 rounded-xl border border-white/10 break-all select-all max-h-16 overflow-y-auto leading-relaxed shadow-inner">
+                      {acc.publicKey || 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...'}
+                    </div>
+
+                    <div className="flex items-center space-x-1.5 text-[10px] text-slate-400 font-medium pt-0.5">
+                      <AlertCircle className="w-3 h-3 text-teal-400 shrink-0" />
+                      <span>Copy this key and paste it at <strong>GitHub ➔ Settings ➔ SSH and GPG keys ➔ New SSH Key</strong></span>
+                    </div>
                   </div>
 
                   {/* macOS Terminal Box for Setup & Verification Commands */}

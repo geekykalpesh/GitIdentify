@@ -1,6 +1,6 @@
 {
   "name": "git-identity",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Desktop app to manage multiple GitHub SSH identities and protect repository commits",
   "main": "dist-electron/main/index.js",
   "author": "GeekyKalpesh <geekykalpesh@gmail.com>",

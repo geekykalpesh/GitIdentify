@@ -1,6 +1,6 @@
 # 🛡️ GitIdentity — Multi-Account SSH & Repository Identity Manager
 
-[![Version](https://img.shields.io/badge/version-1.0.1-teal.svg?style=for-the-badge)](https://github.com/geekykalpesh/GitIdentify/releases)
+[![Version](https://img.shields.io/badge/version-1.0.2-teal.svg?style=for-the-badge)](https://github.com/geekykalpesh/GitIdentify/releases)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg?style=for-the-badge)](https://github.com/geekykalpesh/GitIdentify)
 [![License](https://img.shields.io/badge/license-MIT-emerald.svg?style=for-the-badge)](LICENSE)
 [![Author](https://img.shields.io/badge/Made%20by-GeekyKalpesh-rose.svg?style=for-the-badge)](https://geekykalpesh.com)
@@ -22,6 +22,45 @@ If you work with **multiple GitHub accounts** (e.g., Personal & Work accounts, c
 **GitIdentity solves all of this automatically with zero manual effort!**
 
 Once you add your accounts to GitIdentity **one time**, GitIdentity configures native Git `includeIf` identity routing, manages your `~/.ssh/config` host aliases, auto-starts the native OpenSSH Agent, and ensures **every `git commit` and `git push` uses the correct identity and SSH key automatically.**
+
+---
+
+## 📖 Simple Step-by-Step Guide (From Start to Finish)
+
+Here is the simple 4-step process for anyone using GitIdentity for the first time:
+
+### 1️⃣ Step 1: Download & Open GitIdentity
+Download the installer for your OS (Windows `.exe`, macOS `.dmg`, or Linux `.deb` / `.AppImage`) from the [Releases Page](https://github.com/geekykalpesh/GitIdentify/releases). Launch the application!
+
+### 2️⃣ Step 2: Add Your GitHub Accounts
+1. Click **`Add GitHub Account`**.
+2. Enter your **Name**, **GitHub Username**, **Email**, and a **Host Alias** (e.g. `github-personal` or `github-work`).
+3. Click **Save Account**. GitIdentity automatically generates a secure **ED25519** SSH keypair for this profile.
+
+### 3️⃣ Step 3: Add Your Public SSH Key to GitHub
+1. Click **`Copy Public Key`** on your account card in GitIdentity.
+2. Go to your GitHub account settings at [github.com/settings/ssh/new](https://github.com/settings/ssh/new) and paste the key.
+3. In GitIdentity, click **`Test Connection`** on your card. You will see:  
+   `✅ Connection Successful: Hi <username>! You've successfully authenticated.`
+
+### 4️⃣ Step 4: Use Your SSH Host Alias in Project Folders
+When creating or cloning a repository for that account, set the remote URL using your **Host Alias** instead of `github.com`:
+
+```bash
+# For Personal Repositories (using host alias 'github-personal'):
+git remote add origin git@github-personal:username/my-project.git
+
+# For Work Repositories (using host alias 'github-work'):
+git remote add origin git@github-work:company/work-project.git
+```
+
+Then copy the pre-formatted identity commands provided directly on your account card:
+```bash
+git config user.name "Your Name"
+git config user.email "your.email@example.com"
+```
+
+**That's it! 🎉** GitIdentity will handle the rest silently in the background. Every `git commit` and `git push` will now use the correct account identity and SSH key with 100% isolation!
 
 ---
 
@@ -72,11 +111,11 @@ Download the compiled installer for your operating system from the [Latest Relea
 
 | Operating System | Output File | Type |
 | :--- | :--- | :--- |
-| **Windows** | `GitIdentity-Windows-Installer-1.0.1.exe` | Standard Windows Setup Wizard |
-| **Windows Portable** | `GitIdentity-Windows-Portable-1.0.1.exe` | Portable Executable (No installation required) |
-| **macOS** | `GitIdentity-macOS-Installer-1.0.1.dmg` | macOS Disk Image Installer |
-| **Linux (Ubuntu/Debian)** | `GitIdentity-Linux-Installer-1.0.1.deb` | Debian / Ubuntu Package |
-| **Linux Portable** | `GitIdentity-Linux-Portable-1.0.1.AppImage` | Universal Linux Portable Binary |
+| **Windows** | `GitIdentity-Windows-Installer-1.0.2.exe` | Standard Windows Setup Wizard |
+| **Windows Portable** | `GitIdentity-Windows-Portable-1.0.2.exe` | Portable Executable (No installation required) |
+| **macOS** | `GitIdentity-macOS-Installer-1.0.2.dmg` | macOS Disk Image Installer |
+| **Linux (Ubuntu/Debian)** | `GitIdentity-Linux-Installer-1.0.2.deb` | Debian / Ubuntu Package |
+| **Linux Portable** | `GitIdentity-Linux-Portable-1.0.2.AppImage` | Universal Linux Portable Binary |
 
 ---
 
