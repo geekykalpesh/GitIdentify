@@ -155,16 +155,20 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
 
   return (
     <div className="space-y-6">
-      {/* Beginner Friendly Hero Header */}
-      <div className="glass-card p-6 rounded-2xl border-l-4 border-l-teal-400 space-y-3">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold">
-              <Users className="w-5 h-5" />
+      {/* Apple Pro Hero Banner */}
+      <div className="apple-glass p-5 px-6 rounded-3xl border border-white/10 space-y-3.5 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+          <div className="flex items-center space-x-3.5">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-teal-400 via-cyan-400 to-emerald-400 text-slate-950 flex items-center justify-center font-bold shadow-lg shadow-teal-500/25 border border-white/20 shrink-0">
+              <Users className="w-6 h-6 stroke-[2.5]" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-100">GitHub Accounts</h2>
-              <p className="text-xs text-slate-400">Add your GitHub accounts once. GitIdentity automatically routes your SSH keys & commit identity!</p>
+              <h2 className="text-lg font-extrabold text-slate-100 tracking-tight flex items-center space-x-2">
+                <span>GitHub Identity Manager</span>
+              </h2>
+              <p className="text-xs text-slate-400/90 mt-0.5 font-medium">Add your GitHub profiles. GitIdentity automatically routes your SSH keys & repository identities!</p>
             </div>
           </div>
 
@@ -173,29 +177,29 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
               setModalError(null);
               setShowAddModal(true);
             }}
-            className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-teal-400 to-cyan-400 hover:from-teal-300 hover:to-cyan-300 text-slate-950 rounded-xl text-xs font-extrabold transition shadow-lg shadow-teal-500/20 cursor-pointer"
+            className="apple-button-primary flex items-center space-x-2 px-5 py-2.5 rounded-2xl text-xs font-extrabold cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all shrink-0"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>Add New Account</span>
+            <span>Add GitHub Account</span>
           </button>
         </div>
 
-        <div className="pt-2 border-t border-slate-800/80 flex items-center space-x-2 text-xs text-slate-300 font-medium">
-          <Sparkles className="w-4 h-4 text-teal-400 shrink-0" />
-          <span><strong>Beginner Tip:</strong> Use the generated SSH URL alias (e.g., <code className="text-teal-300 font-mono">git@github-kirti:user/repo.git</code>) when adding remotes. Everything else is automatic!</span>
+        <div className="pt-2.5 border-t border-white/10 flex items-center space-x-2 text-xs text-slate-300 font-medium relative z-10">
+          <Sparkles className="w-4 h-4 text-teal-300 shrink-0" />
+          <span><strong>Pro Tip:</strong> Use the generated SSH host alias (e.g., <code className="text-teal-300 font-mono font-bold bg-white/5 px-2 py-0.5 rounded border border-white/10">git@github-kirti:user/repo.git</code>) when setting git remotes.</span>
         </div>
       </div>
 
       {/* Account Grid */}
       {accounts.length === 0 ? (
-        <div className="glass-card p-12 rounded-2xl text-center space-y-4 border-dashed border-slate-800">
-          <div className="w-14 h-14 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center mx-auto border border-teal-500/20">
-            <Users className="w-7 h-7" />
+        <div className="apple-glass p-14 rounded-3xl text-center space-y-5 border-dashed border-slate-700/60">
+          <div className="w-16 h-16 rounded-3xl bg-teal-500/15 text-teal-300 flex items-center justify-center mx-auto border border-teal-500/30 shadow-xl shadow-teal-500/10">
+            <Users className="w-8 h-8" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-200">No GitHub Accounts Added Yet</h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto leading-relaxed">
-              Click the button below to add your Personal or Work GitHub account. We will generate your SSH key automatically!
+            <h3 className="text-lg font-extrabold text-slate-200 tracking-tight">No GitHub Accounts Added Yet</h3>
+            <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto leading-relaxed font-medium">
+              Click the button below to add your Personal or Work GitHub account. Your dedicated SSH keypair will be generated and configured automatically!
             </p>
           </div>
           <button
@@ -203,106 +207,161 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
               setModalError(null);
               setShowAddModal(true);
             }}
-            className="px-5 py-2.5 bg-teal-500 text-slate-950 hover:bg-teal-400 rounded-xl text-xs font-extrabold shadow-lg cursor-pointer"
+            className="apple-button-primary px-6 py-3 rounded-2xl text-xs font-extrabold shadow-lg cursor-pointer"
           >
             Add Your First Account
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {accounts.map((acc) => {
             const result = testResults[acc.id];
             const isTesting = testingId === acc.id;
             const sampleCmd = `git remote add origin git@${acc.sshHostAlias}:${acc.username}/repository.git`;
+            const configNameCmd = `git config user.name "${acc.username}"`;
+            const configEmailCmd = `git config user.email "${acc.email}"`;
+            const configBothCmd = `git config user.name "${acc.username}" && git config user.email "${acc.email}"`;
+            const checkConfigCmd = `git config user.name && git config user.email`;
             const formattedCreated = formatDate(acc.createdAt);
-            const isCopied = copiedCmd[acc.id];
 
             return (
-              <div key={acc.id} className="glass-card glass-card-hover p-6 rounded-2xl flex flex-col justify-between space-y-5 border border-slate-800">
+              <div key={acc.id} className="apple-glass-card p-6 rounded-3xl flex flex-col justify-between space-y-5 relative overflow-hidden group">
                 <div>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-teal-400 font-bold">
+                      <div className="w-12 h-12 rounded-2xl bg-slate-900/90 border border-white/10 flex items-center justify-center text-teal-300 font-bold shadow-md shrink-0">
                         <Github className="w-6 h-6" />
                       </div>
                       <div>
-                        <h3 className="text-base font-bold text-slate-100">{acc.name}</h3>
+                        <h3 className="text-base font-extrabold text-slate-100 tracking-tight leading-tight">{acc.name}</h3>
                         <p className="text-xs text-teal-400 font-mono font-bold">@{acc.username}</p>
                       </div>
                     </div>
 
-                    <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold border ${
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold border flex items-center space-x-1.5 shadow-sm ${
                       acc.status === 'connected'
-                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                        : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                        : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
                     }`}>
-                      {acc.status === 'connected' ? '✓ SSH Connected' : 'Unverified'}
+                      <span className={`w-1.5 h-1.5 rounded-full ${acc.status === 'connected' ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+                      <span>{acc.status === 'connected' ? 'SSH Connected' : 'Unverified'}</span>
                     </span>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-800/80 space-y-2 text-xs text-slate-300">
+                  <div className="mt-4 pt-3 border-t border-white/10 space-y-1.5 text-xs text-slate-300">
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400 font-semibold">Commit Email:</span>
-                      <span className="font-mono text-slate-200 font-bold select-all">{acc.email}</span>
+                      <span className="text-slate-400/90 font-semibold">Commit Email:</span>
+                      <span className="font-mono text-slate-100 font-bold select-all">{acc.email}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400 font-semibold">SSH Host Alias:</span>
-                      <span className="font-mono text-teal-300 bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800 select-all font-bold">
+                      <span className="text-slate-400/90 font-semibold">SSH Host Alias:</span>
+                      <span className="font-mono text-teal-300 bg-slate-950/80 px-2.5 py-0.5 rounded-xl border border-white/10 select-all font-bold shadow-inner text-xs">
                         {acc.sshHostAlias}
                       </span>
                     </div>
                     {formattedCreated && (
-                      <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
-                        <span className="text-slate-500 flex items-center space-x-1 font-medium">
+                      <div className="flex items-center justify-between text-[11px] text-slate-400 pt-0.5">
+                        <span className="text-slate-400/80 flex items-center space-x-1 font-medium">
                           <Clock className="w-3 h-3 text-teal-400" />
-                          <span>Created & Saved:</span>
+                          <span>Added:</span>
                         </span>
                         <span className="font-mono text-slate-300 font-semibold">{formattedCreated}</span>
                       </div>
                     )}
                   </div>
 
-                  {/* Beginner Friendly Git Remote Add Command Box */}
-                  <div className="mt-4 p-3 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1.5">
-                    <div className="flex items-center justify-between text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                      <span>Git Remote Command URL:</span>
-                      <button
-                        onClick={() => handleCopy(sampleCmd, acc.id)}
-                        className="px-2.5 py-0.5 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 border border-teal-500/30 rounded text-[10px] font-bold flex items-center space-x-1 cursor-pointer"
-                      >
-                        {isCopied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                        <span>{isCopied ? 'Copied!' : 'Copy Command'}</span>
-                      </button>
+                  {/* macOS Terminal Box for Setup & Verification Commands */}
+                  <div className="mt-4 bg-slate-950/90 rounded-2xl border border-white/10 overflow-hidden shadow-inner">
+                    {/* Terminal Header Dots */}
+                    <div className="px-3.5 py-1.5 bg-slate-900/80 border-b border-white/5 flex items-center justify-between">
+                      <div className="flex items-center space-x-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-rose-500/70" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-amber-500/70" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
+                      </div>
+                      <span className="text-[10px] font-mono text-slate-400/80 uppercase font-bold tracking-wider">Terminal Commands</span>
                     </div>
-                    <div className="font-mono text-xs text-teal-300 break-all select-all font-bold p-2 bg-slate-900 rounded-lg border border-slate-800">
-                      {sampleCmd}
+
+                    <div className="p-3 space-y-2.5">
+                      {/* 1. Remote URL Command */}
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                          <span>1. Remote SSH Setup:</span>
+                          <button
+                            onClick={() => handleCopy(sampleCmd, `${acc.id}_remote`)}
+                            className="px-2 py-0.5 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 border border-teal-500/30 rounded-lg text-[10px] font-bold flex items-center space-x-1 cursor-pointer transition"
+                          >
+                            {copiedCmd[`${acc.id}_remote`] ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                            <span>{copiedCmd[`${acc.id}_remote`] ? 'Copied!' : 'Copy'}</span>
+                          </button>
+                        </div>
+                        <div className="font-mono text-xs text-teal-300 break-all select-all font-bold p-2 bg-slate-900/90 rounded-xl border border-white/5">
+                          {sampleCmd}
+                        </div>
+                      </div>
+
+                      {/* 2. Local Repo Git Identity Config Commands */}
+                      <div className="space-y-1 pt-1.5 border-t border-white/5">
+                        <div className="flex items-center justify-between text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                          <span>2. Local Git Config:</span>
+                          <button
+                            onClick={() => handleCopy(configBothCmd, `${acc.id}_config`)}
+                            className="px-2 py-0.5 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 border border-teal-500/30 rounded-lg text-[10px] font-bold flex items-center space-x-1 cursor-pointer transition"
+                          >
+                            {copiedCmd[`${acc.id}_config`] ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                            <span>{copiedCmd[`${acc.id}_config`] ? 'Copied Both!' : 'Copy Both'}</span>
+                          </button>
+                        </div>
+                        <div className="space-y-1 font-mono text-xs select-all font-bold p-2 bg-slate-900/90 rounded-xl border border-white/5">
+                          <div className="text-cyan-300">{configNameCmd}</div>
+                          <div className="text-cyan-300">{configEmailCmd}</div>
+                        </div>
+                      </div>
+
+                      {/* 3. Check Local Config Command */}
+                      <div className="space-y-1 pt-1.5 border-t border-white/5">
+                        <div className="flex items-center justify-between text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                          <span>3. Verify Config:</span>
+                          <button
+                            onClick={() => handleCopy(checkConfigCmd, `${acc.id}_check`)}
+                            className="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-white/10 rounded-lg text-[10px] font-bold flex items-center space-x-1 cursor-pointer transition"
+                          >
+                            {copiedCmd[`${acc.id}_check`] ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                            <span>{copiedCmd[`${acc.id}_check`] ? 'Copied!' : 'Copy Check'}</span>
+                          </button>
+                        </div>
+                        <div className="font-mono text-xs text-emerald-400 break-all select-all font-bold p-2 bg-slate-900/90 rounded-xl border border-white/5 flex items-center justify-between">
+                          <span>{checkConfigCmd}</span>
+                          <span className="text-[9px] text-slate-500 font-sans uppercase font-extrabold">Check</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {result && (
-                  <div className={`p-3 rounded-xl text-xs font-mono border ${
+                  <div className={`p-3 rounded-2xl text-xs font-mono border shadow-inner ${
                     result.success
-                      ? 'bg-emerald-950/40 border-emerald-500/30 text-emerald-300'
-                      : 'bg-red-950/40 border-red-500/30 text-red-300'
+                      ? 'bg-emerald-950/50 border-emerald-500/30 text-emerald-300'
+                      : 'bg-red-950/50 border-red-500/30 text-red-300'
                   }`}>
                     {result.message}
                   </div>
                 )}
 
-                <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                <div className="flex items-center justify-between pt-3 border-t border-white/10">
                   <button
                     onClick={() => handleTest(acc)}
                     disabled={isTesting}
-                    className="flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition cursor-pointer border border-slate-700"
+                    className="apple-button-secondary flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer"
                   >
-                    <RefreshCw className={`w-3.5 h-3.5 ${isTesting ? 'animate-spin' : ''}`} />
+                    <RefreshCw className={`w-3.5 h-3.5 ${isTesting ? 'animate-spin text-teal-400' : ''}`} />
                     <span>{isTesting ? 'Testing SSH...' : 'Test Connection'}</span>
                   </button>
 
                   <button
                     onClick={() => handleDelete(acc.id)}
-                    className="p-2 text-slate-500 hover:text-red-400 rounded-xl hover:bg-red-500/10 transition cursor-pointer"
+                    className="p-2 text-slate-400 hover:text-rose-400 rounded-xl hover:bg-rose-500/10 transition cursor-pointer border border-transparent hover:border-rose-500/20"
                     title="Delete Account Configuration"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -317,48 +376,51 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
       {/* Add Account Modal */}
       {showAddModal && (
         <div 
-          className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 font-sans"
+          className="fixed inset-0 bg-slate-950/80 backdrop-blur-xl z-50 flex items-center justify-center p-4 font-sans animate-in fade-in duration-200"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowAddModal(false);
           }}
         >
-          <div className="glass-card w-full max-w-lg p-6 rounded-2xl space-y-5 border border-slate-800 relative z-50 pointer-events-auto max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center">
+          <div className="apple-glass-modal w-full max-w-lg p-7 rounded-3xl space-y-5 border border-white/15 relative z-50 pointer-events-auto max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-2xl bg-teal-500/20 text-teal-300 flex items-center justify-center border border-teal-500/30">
                   <Plus className="w-5 h-5 stroke-[2.5]" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-100">Add GitHub Account</h3>
+                <div>
+                  <h3 className="text-lg font-extrabold text-slate-100 tracking-tight">Add GitHub Account</h3>
+                  <p className="text-xs text-slate-400 font-medium">Create a new SSH identity profile</p>
+                </div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowAddModal(false)}
-                className="text-slate-400 hover:text-slate-200 text-sm font-bold p-1 cursor-pointer"
+                className="text-slate-400 hover:text-white p-2 hover:bg-white/10 rounded-xl transition cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {modalError && (
-              <div className="p-3 bg-red-950/50 border border-red-500/40 rounded-xl text-xs text-red-300 font-medium">
+              <div className="p-3.5 bg-rose-950/60 border border-rose-500/40 rounded-2xl text-xs text-rose-300 font-medium shadow-inner">
                 {modalError}
               </div>
             )}
 
             <form onSubmit={handleCreateAccount} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Account Display Name (e.g. Personal / Work)</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">Account Display Name</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Personal GitHub"
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-teal-500 cursor-text font-medium"
+                  className="w-full px-4 py-3 bg-slate-950/80 border border-white/10 rounded-2xl text-xs text-slate-100 focus:outline-none focus:border-teal-400 cursor-text font-medium shadow-inner transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">GitHub Username *</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">GitHub Username *</label>
                 <input
                   type="text"
                   required
@@ -366,67 +428,67 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
                   value={username}
                   onChange={(e) => handleUsernameChange(e.target.value)}
                   placeholder="e.g. mahajankirti515"
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 font-mono focus:outline-none focus:border-teal-500 cursor-text"
+                  className="w-full px-4 py-3 bg-slate-950/80 border border-white/10 rounded-2xl text-xs text-slate-100 font-mono focus:outline-none focus:border-teal-400 cursor-text shadow-inner transition"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Custom Host Alias *</label>
+                  <label className="block text-xs font-bold text-slate-300 mb-1.5">Custom Host Alias *</label>
                   <input
                     type="text"
                     required
                     value={sshHostAlias}
                     onChange={(e) => setSshHostAlias(e.target.value)}
                     placeholder="github-kirti"
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-teal-300 font-mono font-bold focus:outline-none focus:border-teal-500 cursor-text"
+                    className="w-full px-4 py-3 bg-slate-950/80 border border-white/10 rounded-2xl text-xs text-teal-300 font-mono font-bold focus:outline-none focus:border-teal-400 cursor-text shadow-inner transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Sample Repo Name</label>
+                  <label className="block text-xs font-bold text-slate-300 mb-1.5">Sample Repo Name</label>
                   <input
                     type="text"
                     value={repoName}
                     onChange={(e) => setRepoName(e.target.value)}
                     placeholder="first"
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 font-mono focus:outline-none focus:border-teal-500 cursor-text"
+                    className="w-full px-4 py-3 bg-slate-950/80 border border-white/10 rounded-2xl text-xs text-slate-100 font-mono focus:outline-none focus:border-teal-400 cursor-text shadow-inner transition"
                   />
                 </div>
               </div>
 
               {/* Live Git Remote Command Preview */}
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1.5">
-                <div className="flex items-center justify-between text-[10px] uppercase font-bold text-slate-400">
-                  <span className="flex items-center space-x-1">
+              <div className="p-3.5 bg-slate-950/90 rounded-2xl border border-white/10 space-y-1.5 shadow-inner">
+                <div className="flex items-center justify-between text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                  <span className="flex items-center space-x-1.5">
                     <Terminal className="w-3.5 h-3.5 text-teal-400" />
                     <span>Exact Remote Command You Will Use:</span>
                   </span>
                 </div>
-                <div className="font-mono text-xs text-teal-300 break-all select-all font-bold p-2 bg-slate-900 rounded-lg border border-slate-800">
+                <div className="font-mono text-xs text-teal-300 break-all select-all font-bold p-2.5 bg-slate-900/90 rounded-xl border border-white/5">
                   {previewCommand}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Git Commit Email *</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">Git Commit Email *</label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="user@example.com"
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 font-mono focus:outline-none focus:border-teal-500 cursor-text"
+                  className="w-full px-4 py-3 bg-slate-950/80 border border-white/10 rounded-2xl text-xs text-slate-100 font-mono focus:outline-none focus:border-teal-400 cursor-text shadow-inner transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Personal Access Token (Optional)</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">Personal Access Token (Optional)</label>
                 <input
                   type="password"
                   value={token}
                   onChange={(e) => setToken(e.target.value)}
                   placeholder="ghp_..."
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 font-mono focus:outline-none focus:border-teal-500 cursor-text"
+                  className="w-full px-4 py-3 bg-slate-950/80 border border-white/10 rounded-2xl text-xs text-slate-100 font-mono focus:outline-none focus:border-teal-400 cursor-text shadow-inner transition"
                 />
               </div>
 
@@ -434,16 +496,16 @@ export const AccountManager: React.FC<AccountManagerProps> = ({ accounts, onAcco
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold cursor-pointer"
+                  className="apple-button-secondary flex-1 py-3 rounded-2xl text-xs font-bold cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 py-3 bg-gradient-to-r from-teal-400 to-cyan-400 hover:from-teal-300 hover:to-cyan-300 text-slate-950 rounded-xl text-xs font-extrabold cursor-pointer disabled:opacity-50 shadow-lg shadow-teal-500/20"
+                  className="apple-button-primary flex-1 py-3 rounded-2xl text-xs font-extrabold cursor-pointer disabled:opacity-50 shadow-lg shadow-teal-500/20"
                 >
-                  {saving ? 'Saving...' : 'Save Account & Setup Key'}
+                  {saving ? 'Saving Profile...' : 'Save Account & Setup Key'}
                 </button>
               </div>
             </form>

@@ -5,12 +5,53 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GitIdentity — Multi-Account SSH & Repository Identity Manager</title>
+    <meta name="description" content="Cross-platform Desktop App to manage multiple GitHub accounts on Windows, macOS, and Linux with 100% account isolation, ED25519 SSH keypair routing, and automatic git identity includeIf rules." />
+    <meta name="keywords" content="git identity manager, multiple github accounts, ssh key manager, git profile switcher, electron desktop app, developer tools, ssh host alias routing, geekykalpesh" />
+    <meta name="author" content="GeekyKalpesh (geekykalpesh.com)" />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/geekykalpesh/GitIdentify" />
+    <meta property="og:title" content="GitIdentity — Multi-Account SSH & Repository Identity Manager" />
+    <meta property="og:description" content="Manage multiple GitHub profiles with zero account leaks. Automatic SSH ED25519 key routing and native Git includeIf identity switcher." />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="GitIdentity — Multi-Account SSH & Repository Identity Manager" />
+    <meta property="twitter:description" content="Manage multiple GitHub profiles with zero account leaks. Automatic SSH ED25519 key routing and native Git includeIf identity switcher." />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
   <body class="bg-background text-slate-100 font-sans antialiased overflow-hidden">
-    <div id="root"></div>
+    <div id="root">
+      <div style="background-color: #080B12; height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Inter', system-ui, sans-serif; color: #f1f5f9; overflow: hidden; position: relative;">
+        <div style="position: absolute; width: 350px; height: 350px; background: rgba(20, 184, 166, 0.15); border-radius: 50%; filter: blur(100px); pointer-events: none;"></div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; z-index: 10;">
+          <div style="width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, #2dd4bf, #06b6d4, #6366f1); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(45, 212, 191, 0.3); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#080b12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <div style="text-align: center;">
+            <h1 style="font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: #f8fafc;">GitIdentity</h1>
+            <p style="font-size: 11px; color: #2dd4bf; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 4px;">SSH & Git Identity Router</p>
+          </div>
+          <div style="display: flex; items-center; gap: 8px; margin-top: 14px; background: rgba(255, 255, 255, 0.05); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="width: 14px; height: 14px; border: 2px solid #2dd4bf; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+            <span style="font-size: 11px; color: #cbd5e1; font-weight: 600;">Loading Identity Vault...</span>
+          </div>
+          <div style="font-size: 10px; color: #64748b; font-weight: 500; margin-top: 12px;">
+            Made with ❤️ by geekykalpesh.com
+          </div>
+        </div>
+        <style>
+          @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        </style>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,36 +1,89 @@
 {
   "name": "git-identity",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Desktop app to manage multiple GitHub SSH identities and protect repository commits",
   "main": "dist-electron/main/index.js",
-  "author": "GitIdentity Team",
+  "author": "GeekyKalpesh <geekykalpesh@gmail.com>",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "dist": "npm run build && electron-builder"
+    "cert:generate": "powershell -ExecutionPolicy Bypass -File ./scripts/generate-cert.ps1",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:linux": "npm run build && electron-builder --linux",
+    "dist:all": "npm run build && electron-builder -wml",
+    "dist:signed": "powershell -ExecutionPolicy Bypass -Command \"$env:CSC_LINK='./certs/geekykalpesh-code-signing.pfx'; $env:CSC_KEY_PASSWORD='GitIdentity2026!'; npm run dist:win\""
   },
   "build": {
-    "appId": "com.gitidentity.app",
+    "appId": "com.geekykalpesh.gitidentity",
     "productName": "GitIdentity",
+    "icon": "resources/icon.png",
     "directories": {
       "output": "release"
     },
     "files": [
       "dist/**/*",
-      "dist-electron/**/*"
+      "dist-electron/**/*",
+      "resources/**/*"
     ],
     "win": {
+      "publisherName": "GeekyKalpesh",
+      "icon": "resources/icon.png",
+      "signingHashAlgorithms": [
+        "sha256"
+      ],
       "target": [
-        "nsis",
-        "portable"
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "icon": "resources/icon.png",
+      "category": "public.app-category.developer-tools",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "linux": {
+      "icon": "resources/icon.png",
+      "category": "Development",
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
       ]
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "${productName}-Windows-Installer-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-Windows-Portable-${version}.${ext}"
+    },
+    "dmg": {
+      "artifactName": "${productName}-macOS-Installer-${version}.${ext}"
+    },
+    "appImage": {
+      "artifactName": "${productName}-Linux-Portable-${version}.${ext}"
+    },
+    "deb": {
+      "artifactName": "${productName}-Linux-Installer-${version}.${ext}"
     }
   },
   "dependencies": {

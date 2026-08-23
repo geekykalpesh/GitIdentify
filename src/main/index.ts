@@ -29,11 +29,42 @@ function configureAutoStart(): void {
 }
 
 /**
+ * Helper to resolve the application icon path across dev & prod environments
+ */
+function getAppIconPath(): string {
+  const candidates = [
+    path.join(__dirname, '../../resources/icon.png'),
+    path.join(__dirname, '../../src/renderer/public/icon.png'),
+    path.join(__dirname, '../../dist/icon.png'),
+    path.join(app.getAppPath(), 'resources/icon.png'),
+    path.join(app.getAppPath(), 'dist/icon.png'),
+    path.join(process.resourcesPath, 'icon.png'),
+    path.join(process.resourcesPath, 'resources/icon.png'),
+  ];
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+
+  return '';
+}
+
+/**
  * Create System Tray Icon for silent background operation
  */
 function createSystemTray(): void {
   try {
-    const icon = nativeImage.createFromNamedImage('NSStatusAvailable', [16, 16]);
+    const iconPath = getAppIconPath();
+    let icon: nativeImage;
+
+    if (iconPath && fs.existsSync(iconPath)) {
+      icon = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 });
+    } else {
+      icon = nativeImage.createFromNamedImage('NSStatusAvailable', [16, 16]);
+    }
+
     tray = new Tray(icon);
 
     const contextMenu = Menu.buildFromTemplate([
@@ -90,21 +121,35 @@ function createSystemTray(): void {
 function createWindow(): void {
   logger.info('Creating Electron main window...', 'MainProcess');
 
+  const iconPath = getAppIconPath();
+  const windowIcon = iconPath && fs.existsSync(iconPath) ? nativeImage.createFromPath(iconPath) : undefined;
+
+  const isHiddenBoot = process.argv.includes('--hidden');
+
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     minWidth: 950,
     minHeight: 650,
-    backgroundColor: '#0B0F19',
+    backgroundColor: '#080B12',
     title: 'GitIdentity',
+    icon: windowIcon,
     autoHideMenuBar: true,
-    show: !process.argv.includes('--hidden'),
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, '../../dist-electron/preload/index.js'),
       nodeIntegration: false,
       contextIsolation: true,
       sandbox: false,
     },
+  });
+
+  // Reveal window smoothly once DOM is rendered and ready
+  mainWindow.once('ready-to-show', () => {
+    if (!isHiddenBoot && mainWindow) {
+      mainWindow.show();
+      mainWindow.focus();
+    }
   });
 
   if (process.env.VITE_DEV_SERVER_URL) {

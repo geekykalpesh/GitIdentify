@@ -1,16 +1,66 @@
 # Dependencies
 node_modules/
+.pnp
+.pnp.js
 
-# Production builds & packaged executables
+# Build Outputs & Packaged Executables
 dist/
 dist-electron/
 release/
+out/
+*.exe
+*.dmg
+*.deb
+*.rpm
+*.AppImage
+*.blockmap
+builder-debug.yml
+builder-effective-config.yaml
 
-# IDE & OS temp files
-.DS_Store
-Thumbs.db
+# Security & Private Certificates (DO NOT COMMIT SECRETS)
+certs/*.pfx
+certs/*.p12
+certs/*.key
+certs/*.pem
+certs/*.cer
+certs/
+!.certs/.gitkeep
+
+# Environment Files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs & Diagnostics
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE & Editor Metadata
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# Antigravity Scratch Files
 scratch/
 .system_generated/
-.vscode/
-.idea/

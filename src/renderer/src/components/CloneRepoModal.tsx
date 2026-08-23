@@ -103,32 +103,39 @@ export const CloneRepoModal: React.FC<CloneRepoModalProps> = ({ accounts, onClon
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold text-slate-100">GitHub Repositories & API</h2>
-          <p className="text-xs text-slate-400 font-mono">Automatic transformed remote URL: git@github-account:owner/repo.git</p>
+      <div className="apple-glass p-6 rounded-3xl border border-white/10 space-y-3 shadow-2xl relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center space-x-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-400 via-teal-400 to-indigo-500 text-slate-950 flex items-center justify-center font-bold shadow-lg shadow-cyan-500/25 border border-white/20">
+              <Download className="w-6 h-6 stroke-[2.5]" />
+            </div>
+            <div>
+              <h2 className="text-xl font-extrabold text-slate-100 tracking-tight">Clone & Remote Manager</h2>
+              <p className="text-xs text-slate-400/90 font-medium mt-0.5">Automated git clone with pre-configured SSH host alias identity routing</p>
+            </div>
+          </div>
+          
+          {activeAccount?.token && (
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="apple-button-secondary flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-extrabold cursor-pointer"
+            >
+              <Plus className="w-4 h-4 stroke-[2.5]" />
+              <span>Create Remote Repo</span>
+            </button>
+          )}
         </div>
-        
-        {activeAccount?.token && (
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="flex items-center space-x-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-teal-300 rounded-lg text-xs font-semibold border border-slate-700"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Create Remote Repo</span>
-          </button>
-        )}
       </div>
 
       {/* Main Clone Box */}
-      <div className="glass-card p-6 rounded-2xl space-y-5">
+      <div className="apple-glass p-7 rounded-3xl space-y-5 border border-white/10 shadow-xl">
         {/* Account Selector */}
         <div>
-          <label className="block text-xs font-semibold text-slate-400 mb-1">Account:</label>
+          <label className="block text-xs font-extrabold text-slate-300 mb-1.5 uppercase tracking-wider">Target Account Profile:</label>
           <select
             value={selectedAccountId}
             onChange={(e) => setSelectedAccountId(e.target.value)}
-            className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm font-semibold text-slate-200 focus:outline-none focus:border-teal-500"
+            className="w-full px-4 py-3 bg-slate-950/90 border border-white/10 rounded-2xl text-xs font-extrabold text-slate-100 focus:outline-none focus:border-teal-400 shadow-inner"
           >
             {accounts.map((acc) => (
               <option key={acc.id} value={acc.id}>
@@ -140,46 +147,46 @@ export const CloneRepoModal: React.FC<CloneRepoModalProps> = ({ accounts, onClon
 
         {/* Repository Search & List */}
         <div>
-          <label className="block text-xs font-semibold text-slate-400 mb-1">Repository:</label>
+          <label className="block text-xs font-extrabold text-slate-300 mb-1.5 uppercase tracking-wider">Repository Selection:</label>
           {activeAccount?.token ? (
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               <div className="relative">
-                <Search className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="[ Search repositories... ]"
-                  className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-teal-500"
+                  placeholder="Search GitHub repositories..."
+                  className="w-full pl-10 pr-4 py-3 bg-slate-950/90 border border-white/10 rounded-2xl text-xs text-slate-100 focus:outline-none focus:border-teal-400 shadow-inner font-medium"
                 />
               </div>
 
               {loadingRepos ? (
-                <div className="p-4 text-center text-xs text-slate-400 flex items-center justify-center space-x-2">
+                <div className="p-5 text-center text-xs text-slate-400 flex items-center justify-center space-x-2 bg-slate-950/60 rounded-2xl border border-white/5 font-medium">
                   <RefreshCw className="w-4 h-4 animate-spin text-teal-400" />
                   <span>Fetching repositories from GitHub API...</span>
                 </div>
               ) : (
-                <div className="max-h-48 overflow-y-auto space-y-1 bg-slate-950 p-2 rounded-xl border border-slate-800">
+                <div className="max-h-52 overflow-y-auto space-y-1.5 bg-slate-950/90 p-2.5 rounded-2xl border border-white/10 shadow-inner">
                   {filteredRepos.length === 0 ? (
-                    <div className="p-3 text-center text-xs text-slate-500">No repositories found.</div>
+                    <div className="p-4 text-center text-xs text-slate-500 font-medium">No repositories found.</div>
                   ) : (
                     filteredRepos.map((repo) => (
                       <button
                         key={repo.id}
                         onClick={() => setSelectedRepo(repo)}
-                        className={`w-full flex items-center justify-between p-2 rounded-lg text-xs text-left transition ${
+                        className={`w-full flex items-center justify-between p-2.5 rounded-xl text-xs text-left transition cursor-pointer ${
                           selectedRepo?.id === repo.id
-                            ? 'bg-teal-500/20 text-teal-300 font-semibold border border-teal-500/30'
-                            : 'text-slate-300 hover:bg-slate-900'
+                            ? 'bg-teal-500/20 text-teal-200 font-bold border border-teal-500/40 shadow-sm'
+                            : 'text-slate-300 hover:bg-white/5'
                         }`}
                       >
-                        <div className="flex items-center space-x-2 truncate">
-                          <Github className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <div className="flex items-center space-x-2.5 truncate">
+                          <Github className="w-4 h-4 text-slate-400 shrink-0" />
                           <span className="truncate">{repo.fullName}</span>
                         </div>
                         {repo.private && (
-                          <span className="px-1.5 py-0.5 text-[9px] bg-slate-800 text-slate-400 rounded">Private</span>
+                          <span className="px-2 py-0.5 text-[9px] bg-slate-800 text-slate-300 rounded-full font-bold border border-white/10">Private</span>
                         )}
                       </button>
                     ))
@@ -194,14 +201,14 @@ export const CloneRepoModal: React.FC<CloneRepoModalProps> = ({ accounts, onClon
                 value={customOwner}
                 onChange={(e) => setCustomOwner(e.target.value)}
                 placeholder="Owner (e.g. geekykalpesh)"
-                className="px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-teal-500"
+                className="px-4 py-3 bg-slate-950/90 border border-white/10 rounded-2xl text-xs text-slate-100 focus:outline-none focus:border-teal-400 shadow-inner font-medium"
               />
               <input
                 type="text"
                 value={customRepoName}
                 onChange={(e) => setCustomRepoName(e.target.value)}
                 placeholder="Repository Name (e.g. my-project)"
-                className="px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-teal-500"
+                className="px-4 py-3 bg-slate-950/90 border border-white/10 rounded-2xl text-xs text-slate-100 focus:outline-none focus:border-teal-400 shadow-inner font-medium"
               />
             </div>
           )}
@@ -209,17 +216,17 @@ export const CloneRepoModal: React.FC<CloneRepoModalProps> = ({ accounts, onClon
 
         {/* Destination Path */}
         <div>
-          <label className="block text-xs font-semibold text-slate-400 mb-1">Destination:</label>
+          <label className="block text-xs font-extrabold text-slate-300 mb-1.5 uppercase tracking-wider">Destination Directory:</label>
           <div className="flex space-x-2">
             <input
               type="text"
               value={destinationDir}
               onChange={(e) => setDestinationDir(e.target.value)}
-              className="flex-1 px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 font-mono focus:outline-none focus:border-teal-500"
+              className="flex-1 px-4 py-3 bg-slate-950/90 border border-white/10 rounded-2xl text-xs text-slate-100 font-mono font-bold focus:outline-none focus:border-teal-400 shadow-inner"
             />
             <button
               onClick={handleSelectFolder}
-              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold flex items-center space-x-1"
+              className="apple-button-secondary px-4 py-3 rounded-2xl text-xs font-extrabold flex items-center space-x-1.5 cursor-pointer"
             >
               <Folder className="w-4 h-4 text-teal-400" />
               <span>Browse</span>
@@ -228,11 +235,11 @@ export const CloneRepoModal: React.FC<CloneRepoModalProps> = ({ accounts, onClon
         </div>
 
         {/* Dynamic Clone URL Preview */}
-        <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 space-y-1">
-          <div className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">
-            Application Automatically Uses:
+        <div className="p-4 bg-slate-950/90 rounded-2xl border border-white/10 space-y-1.5 shadow-inner">
+          <div className="text-[10px] uppercase tracking-wider text-slate-400 font-extrabold">
+            Application Transformed SSH Remote URL:
           </div>
-          <div className="font-mono text-xs text-teal-300 break-all select-all">
+          <div className="font-mono text-xs text-teal-300 break-all select-all font-bold">
             {generatedUrl}
           </div>
         </div>
@@ -241,56 +248,56 @@ export const CloneRepoModal: React.FC<CloneRepoModalProps> = ({ accounts, onClon
         <button
           onClick={handleClone}
           disabled={cloning}
-          className="w-full py-3 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 disabled:opacity-50 text-slate-950 font-extrabold rounded-xl transition shadow-lg flex items-center justify-center space-x-2 text-sm"
+          className="apple-button-primary w-full py-3.5 rounded-2xl font-extrabold transition shadow-lg flex items-center justify-center space-x-2 text-xs uppercase tracking-wider cursor-pointer disabled:opacity-50"
         >
-          <Download className="w-4 h-4" />
-          <span>{cloning ? 'Cloning Repository...' : '[Clone]'}</span>
+          <Download className="w-4 h-4 stroke-[2.5]" />
+          <span>{cloning ? 'Cloning Repository...' : 'Clone Repository'}</span>
         </button>
       </div>
 
       {/* Create Remote Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="glass-card w-full max-w-md p-6 rounded-2xl space-y-5 border border-slate-800">
-            <h3 className="text-lg font-bold text-slate-100">Create GitHub Repository</h3>
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-xl z-50 flex items-center justify-center p-4">
+          <div className="apple-glass-modal w-full max-w-md p-7 rounded-3xl space-y-5 border border-white/15 shadow-2xl">
+            <h3 className="text-lg font-extrabold text-slate-100 tracking-tight">Create GitHub Repository</h3>
             <form onSubmit={handleCreateRepo} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Repository Name *</label>
+                <label className="block text-xs font-extrabold text-slate-300 mb-1.5">Repository Name *</label>
                 <input
                   type="text"
                   required
                   value={newRepoName}
                   onChange={(e) => setNewRepoName(e.target.value)}
                   placeholder="my-awesome-repo"
-                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 font-mono focus:outline-none focus:border-teal-500"
+                  className="w-full px-4 py-3 bg-slate-950/90 border border-white/10 rounded-2xl text-xs text-slate-100 font-mono focus:outline-none focus:border-teal-400 shadow-inner"
                 />
               </div>
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2.5">
                 <input
                   type="checkbox"
                   id="privateCheck"
                   checked={newRepoPrivate}
                   onChange={(e) => setNewRepoPrivate(e.target.checked)}
-                  className="rounded bg-slate-950 border-slate-800 text-teal-500"
+                  className="rounded-lg bg-slate-950 border-white/10 text-teal-400 w-4 h-4"
                 />
-                <label htmlFor="privateCheck" className="text-xs text-slate-300 font-medium">Private Repository</label>
+                <label htmlFor="privateCheck" className="text-xs text-slate-300 font-semibold cursor-pointer select-none">Private Repository</label>
               </div>
 
               <div className="flex space-x-3 pt-3">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="flex-1 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs font-bold"
+                  className="apple-button-secondary flex-1 py-3 rounded-2xl text-xs font-bold cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={creating}
-                  className="flex-1 py-2 bg-teal-500 text-slate-950 rounded-lg text-xs font-bold"
+                  className="apple-button-primary flex-1 py-3 rounded-2xl text-xs font-extrabold cursor-pointer disabled:opacity-50"
                 >
-                  {creating ? 'Creating...' : 'Create Repo'}
+                  {creating ? 'Creating...' : 'Create Repository'}
                 </button>
               </div>
             </form>

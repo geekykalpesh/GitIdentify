@@ -160,7 +160,7 @@ export function registerIpcHandlers(): void {
   });
 
   ipcMain.handle('shell:open-external', async (_, url: string) => {
-    if (url.startsWith('https://') || url.startsWith('http://')) {
+    if (url.startsWith('https://') || url.startsWith('http://') || url.startsWith('mailto:')) {
       await shell.openExternal(url);
     }
   });
