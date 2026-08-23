@@ -1,6 +1,6 @@
 {
   "name": "git-identity",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Desktop app to manage multiple GitHub SSH identities and protect repository commits",
   "main": "dist-electron/main/index.js",
   "author": "GeekyKalpesh <geekykalpesh@gmail.com>",
@@ -88,9 +88,11 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "framer-motion": "^13.1.1",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-dropzone": "^20.1.1",
     "tailwind-merge": "^3.0.1"
   },
   "devDependencies": {

@@ -3,17 +3,19 @@ import { Sidebar, NavTab } from './components/Sidebar';
 import { SystemStatusCard } from './components/SystemStatusCard';
 import { AccountManager } from './components/AccountManager';
 import { SshKeyManager } from './components/SshKeyManager';
-import { SystemStatus, Account } from './types';
+import { RepositoryManager } from './components/RepositoryManager';
+import { SystemStatus, Account, Repository } from './types';
 import { api } from './utils/api';
 import { ShieldCheck, RefreshCw, Sparkles, Terminal } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<NavTab>('accounts');
+  const [activeTab, setActiveTab] = useState<NavTab>('repos');
   const [systemStatus, setSystemStatus] = useState<SystemStatus | null>(null);
   const [loadingStatus, setLoadingStatus] = useState(false);
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
 
-  // Load system status & accounts on app launch
+  // Load system status, accounts & repos on app launch
   const loadInitialData = async () => {
     setLoadingStatus(true);
     try {
@@ -22,6 +24,9 @@ export const App: React.FC = () => {
 
       const accs = await api.getAccounts();
       setAccounts(accs || []);
+
+      const repos = await api.getRepositories();
+      setRepositories(repos || []);
     } catch (e) {
       console.error('App init error:', e);
     } finally {
@@ -40,6 +45,13 @@ export const App: React.FC = () => {
     } catch (e) {}
   };
 
+  const refreshRepos = async () => {
+    try {
+      const repos = await api.getRepositories();
+      setRepositories(repos || []);
+    } catch (e) {}
+  };
+
   const refreshSystem = async () => {
     setLoadingStatus(true);
     try {
@@ -47,6 +59,12 @@ export const App: React.FC = () => {
       setSystemStatus(status);
     } catch (e) {}
     setLoadingStatus(false);
+  };
+
+  const refreshAll = () => {
+    refreshAccounts();
+    refreshRepos();
+    refreshSystem();
   };
 
   return (
@@ -61,6 +79,7 @@ export const App: React.FC = () => {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         accountCount={accounts.length}
+        repoCount={repositories.length}
       />
 
       {/* Main Container */}
@@ -70,6 +89,7 @@ export const App: React.FC = () => {
           <div className="flex items-center space-x-3">
             <span className="text-xs font-extrabold text-slate-300 uppercase tracking-widest">
               {activeTab === 'accounts' && 'GitHub Accounts & Identity Cards'}
+              {activeTab === 'repos' && 'Local Repositories & Drag-Drop Inspector'}
               {activeTab === 'ssh' && 'SSH Keypairs & Config Manager'}
               {activeTab === 'system' && 'System Health & Security Status'}
             </span>
@@ -84,10 +104,7 @@ export const App: React.FC = () => {
             </div>
 
             <button
-              onClick={() => {
-                refreshAccounts();
-                refreshSystem();
-              }}
+              onClick={refreshAll}
               disabled={loadingStatus}
               className="px-3 py-1.5 bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 hover:text-white rounded-xl border border-white/10 transition cursor-pointer flex items-center space-x-1.5 text-xs font-semibold"
               title="Refresh Identity Router State"
@@ -103,7 +120,15 @@ export const App: React.FC = () => {
           {activeTab === 'accounts' && (
             <AccountManager
               accounts={accounts}
-              onAccountsChange={refreshAccounts}
+              onAccountsChange={refreshAll}
+            />
+          )}
+
+          {activeTab === 'repos' && (
+            <RepositoryManager
+              repositories={repositories}
+              accounts={accounts}
+              onRefresh={refreshAll}
             />
           )}
 

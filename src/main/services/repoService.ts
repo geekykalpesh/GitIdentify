@@ -353,6 +353,43 @@ export class RepoService {
       throw err;
     }
   }
+
+  /**
+   * Manually sets custom local user.name and user.email for a repository
+   */
+  public async setCustomLocalIdentity(repoPath: string, name: string, email: string): Promise<Repository> {
+    logger.info(`Setting custom local identity for '${repoPath}' to name='${name}', email='${email}'`, 'RepoService');
+
+    if (name.trim()) {
+      await execFileAsync('git', ['config', 'user.name', name.trim()], { cwd: repoPath });
+    } else {
+      await execFileAsync('git', ['config', '--unset', 'user.name'], { cwd: repoPath }).catch(() => {});
+    }
+
+    if (email.trim()) {
+      await execFileAsync('git', ['config', 'user.email', email.trim()], { cwd: repoPath });
+    } else {
+      await execFileAsync('git', ['config', '--unset', 'user.email'], { cwd: repoPath }).catch(() => {});
+    }
+
+    const updated = await this.inspectRepo(repoPath, secureStorage.getAccounts());
+    secureStorage.saveRepository(updated);
+    return updated;
+  }
+
+  /**
+   * Unsets local user.name and user.email from repository .git/config
+   */
+  public async unsetLocalIdentity(repoPath: string): Promise<Repository> {
+    logger.info(`Unsetting local identity for '${repoPath}'`, 'RepoService');
+
+    await execFileAsync('git', ['config', '--unset', 'user.name'], { cwd: repoPath }).catch(() => {});
+    await execFileAsync('git', ['config', '--unset', 'user.email'], { cwd: repoPath }).catch(() => {});
+
+    const updated = await this.inspectRepo(repoPath, secureStorage.getAccounts());
+    secureStorage.saveRepository(updated);
+    return updated;
+  }
 }
 
 export const repoService = new RepoService();

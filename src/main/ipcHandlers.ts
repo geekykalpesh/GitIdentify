@@ -90,6 +90,14 @@ export function registerIpcHandlers(): void {
     return await repoService.switchAccountIdentity(repoPath, account);
   });
 
+  ipcMain.handle('repos:set-custom-identity', async (_, { repoPath, name, email }: { repoPath: string; name: string; email: string }) => {
+    return await repoService.setCustomLocalIdentity(repoPath, name, email);
+  });
+
+  ipcMain.handle('repos:unset-local-identity', async (_, repoPath: string) => {
+    return await repoService.unsetLocalIdentity(repoPath);
+  });
+
   ipcMain.handle('repos:set-remote', async (_, { repoPath, account, rawUrl }: { repoPath: string; account: Account; rawUrl: string }) => {
     return await repoService.setRepoRemoteUrl(repoPath, account, rawUrl);
   });

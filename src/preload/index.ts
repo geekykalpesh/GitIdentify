@@ -24,6 +24,8 @@ const api = {
   autoScanRepos: () => ipcRenderer.invoke('repos:auto-scan'),
   inspectRepo: (repoPath: string) => ipcRenderer.invoke('repos:inspect', repoPath),
   switchAccountIdentity: (repoPath: string, account: any) => ipcRenderer.invoke('repos:switch-identity', { repoPath, account }),
+  setCustomLocalIdentity: (repoPath: string, name: string, email: string) => ipcRenderer.invoke('repos:set-custom-identity', { repoPath, name, email }),
+  unsetLocalIdentity: (repoPath: string) => ipcRenderer.invoke('repos:unset-local-identity', repoPath),
   setRepoRemoteUrl: (repoPath: string, account: any, rawUrl: string) => 
     ipcRenderer.invoke('repos:set-remote', { repoPath, account, rawUrl }),
   initNewRepoWithRemote: (destinationDir: string, folderName: string, account: any, rawUrl: string) =>

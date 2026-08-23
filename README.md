@@ -1,6 +1,6 @@
 # 🛡️ GitIdentity — Multi-Account SSH & Repository Identity Manager
 
-[![Version](https://img.shields.io/badge/version-1.0.2-teal.svg?style=for-the-badge)](https://github.com/geekykalpesh/GitIdentify/releases)
+[![Version](https://img.shields.io/badge/version-1.0.3-teal.svg?style=for-the-badge)](https://github.com/geekykalpesh/GitIdentify/releases)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg?style=for-the-badge)](https://github.com/geekykalpesh/GitIdentify)
 [![License](https://img.shields.io/badge/license-MIT-emerald.svg?style=for-the-badge)](LICENSE)
 [![Author](https://img.shields.io/badge/Made%20by-GeekyKalpesh-rose.svg?style=for-the-badge)](https://geekykalpesh.com)
@@ -111,11 +111,11 @@ Download the compiled installer for your operating system from the [Latest Relea
 
 | Operating System | Output File | Type |
 | :--- | :--- | :--- |
-| **Windows** | `GitIdentity-Windows-Installer-1.0.2.exe` | Standard Windows Setup Wizard |
-| **Windows Portable** | `GitIdentity-Windows-Portable-1.0.2.exe` | Portable Executable (No installation required) |
-| **macOS** | `GitIdentity-macOS-Installer-1.0.2.dmg` | macOS Disk Image Installer |
-| **Linux (Ubuntu/Debian)** | `GitIdentity-Linux-Installer-1.0.2.deb` | Debian / Ubuntu Package |
-| **Linux Portable** | `GitIdentity-Linux-Portable-1.0.2.AppImage` | Universal Linux Portable Binary |
+| **Windows** | `GitIdentity-Windows-Installer-1.0.3.exe` | Standard Windows Setup Wizard |
+| **Windows Portable** | `GitIdentity-Windows-Portable-1.0.3.exe` | Portable Executable (No installation required) |
+| **macOS** | `GitIdentity-macOS-Installer-1.0.3.dmg` | macOS Disk Image Installer |
+| **Linux (Ubuntu/Debian)** | `GitIdentity-Linux-Installer-1.0.3.deb` | Debian / Ubuntu Package |
+| **Linux Portable** | `GitIdentity-Linux-Portable-1.0.3.AppImage` | Universal Linux Portable Binary |
 
 ---
 

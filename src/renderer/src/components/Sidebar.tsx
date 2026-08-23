@@ -8,22 +8,25 @@ import {
   Heart,
   ExternalLink,
   Mail,
-  Sparkles
+  Sparkles,
+  FolderGit2
 } from 'lucide-react';
 import { api } from '../utils/api';
 
-export type NavTab = 'accounts' | 'ssh' | 'system';
+export type NavTab = 'accounts' | 'repos' | 'ssh' | 'system';
 
 interface SidebarProps {
   activeTab: NavTab;
   setActiveTab: (tab: NavTab) => void;
   accountCount: number;
+  repoCount?: number;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   setActiveTab,
   accountCount,
+  repoCount = 0,
 }) => {
   const mainNav = [
     {
@@ -32,6 +35,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       sublabel: 'Accounts & SSH aliases',
       icon: Users,
       badge: accountCount > 0 ? accountCount : undefined,
+    },
+    {
+      id: 'repos' as NavTab,
+      label: 'Local Repositories',
+      sublabel: 'Drag-Drop & Identity Switcher',
+      icon: FolderGit2,
+      badge: repoCount > 0 ? repoCount : undefined,
     },
     {
       id: 'ssh' as NavTab,
